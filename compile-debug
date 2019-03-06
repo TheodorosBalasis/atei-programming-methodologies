@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Gets all .cc files in the src directory.
+files=`ls ./src | grep -o "^.*\.cc"`
+
+# Compiles all found .cc files, with the same name but no extension.
+for file in $files
+do
+  file_name=`echo $file | grep -o "^.*\."`
+  length=${#file_name}
+  length=$length-1
+  file_name=${file_name:0:$length}
+  clang++ ./src/$file -o ./out/$file_name -g
+done
