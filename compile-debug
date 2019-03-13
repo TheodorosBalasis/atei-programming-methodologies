@@ -10,5 +10,5 @@ do
   length=${#file_name}
   length=$length-1
   file_name=${file_name:0:$length}
-  clang++ ./src/$file -o ./out/$file_name -g
+  clang++ -std=c++11 ./src/$file -o ./out/$file_name -g
 done
