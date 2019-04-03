@@ -1,0 +1,29 @@
+#!/bin/bash
+
+./create-dirs
+
+# Gets all .cc files in the .temp directory.
+temp_files=`ls ./.temp | grep -o "^.*\.cc"`
+
+for file in $temp_files
+do
+  # Check if the temp file exists in the src directory. If it does not, then
+  # delete it from .temp.
+  if [ ! -f ./src/$file ]
+  then
+    rm ./.temp/$file
+  fi
+done
+
+out_files=`ls ./out`
+
+for file in $out_files
+do
+  with_extension="$file.cc"
+  # Check if an equivalent source file exists in the src directory. If it does
+  # not, then delete the one in the out directory.
+  if [ ! -f ./src/$with_extension ]
+  then
+    rm ./out/$file
+  fi
+done

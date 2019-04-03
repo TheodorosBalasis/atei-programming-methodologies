@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Create missing directories.
+
+if [ ! -d ./src ]
+then
+  mkdir ./src
+fi
+
+if [ ! -d ./.temp ]
+then
+  mkdir ./.temp
+fi
+
+if [ ! -d ./out ]
+then
+  mkdir ./out
+fi

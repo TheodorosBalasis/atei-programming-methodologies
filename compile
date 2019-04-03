@@ -1,14 +1,38 @@
 #!/bin/bash
 
+# Compiles all files in the src directory, checking for differences with files
+# in the .temp directory to avoid redundant compilation, reducing compile times.
+# Files are compiled and output to the out directory with the same name but no
+# extension.
+
+./create-dirs
+
 # Gets all .cc files in the src directory.
 files=`ls ./src | grep -o "^.*\.cc"`
 
 # Compiles all found .cc files, with the same name but no extension.
 for file in $files
 do
-  file_name=`echo $file | grep -o "^.*\."`
-  length=${#file_name}
-  length=$length-1
-  file_name=${file_name:0:$length}
-  clang++ -std=c++11 ./src/$file -o ./out/$file_name
+  # Check if a temp file exists.
+  if [ ! -f ./.temp/$file ]
+  then
+    # If it doesn't create one.
+    cp ./src/$file ./temp
+  else
+    # If the temp file exists but is different.
+    if ! cmp -s ./src/$file ./.temp/$file
+    then
+      file_name=`echo $file | grep -o "^.*\."`
+      
+      length=${#file_name}
+      length=$length-1
+      file_name=${file_name:0:$length}
+      
+      clang++ -std=c++11 ./src/$file -o ./out/$file_name
+
+      cp ./src/$file ./.temp
+    fi
+  fi
 done
+
+./clean-dirs
