@@ -28,7 +28,7 @@ do
       length=$length-1
       file_name=${file_name:0:$length}
       
-      clang++ -std=c++11 ./src/$file -o ./out/$file_name
+      clang++ -std=c++11 ./src/$file -o ./out/$file_name -g
 
       cp ./src/$file ./.temp
     fi
