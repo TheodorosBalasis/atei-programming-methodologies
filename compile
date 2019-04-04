@@ -13,25 +13,19 @@ files=`ls ./src | grep -o "^.*\.cc"`
 # Compiles all found .cc files, with the same name but no extension.
 for file in $files
 do
-  # Check if a temp file exists.
-  if [ ! -f ./.temp/$file ]
+  # If a temp file doesn't exist or one exists but is different from the source
+  # file, compile the source file and create a new temp copy.
+  if [ ! -f ./.temp/$file ] || ! cmp -s ./src/$file ./.temp/$file
   then
-    # If it doesn't create one.
-    cp ./src/$file ./.temp/
-  else
-    # If the temp file exists but is different.
-    if ! cmp -s ./src/$file ./.temp/$file
-    then
-      file_name=`echo $file | grep -o "^.*\."`
-      
-      length=${#file_name}
-      length=$length-1
-      file_name=${file_name:0:$length}
-      
-      clang++ -std=c++11 ./src/$file -o ./out/$file_name -g
+    file_name=`echo $file | grep -o "^.*\."`
+    
+    length=${#file_name}
+    length=$length-1
+    file_name=${file_name:0:$length}
+    
+    clang++ -std=c++11 ./src/$file -o ./out/$file_name -g
 
-      cp ./src/$file ./.temp/
-    fi
+    cp ./src/$file ./.temp/
   fi
 done
 
