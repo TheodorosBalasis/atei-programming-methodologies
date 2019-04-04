@@ -17,7 +17,7 @@ do
   if [ ! -f ./.temp/$file ]
   then
     # If it doesn't create one.
-    cp ./src/$file ./temp
+    cp ./src/$file ./.temp/
   else
     # If the temp file exists but is different.
     if ! cmp -s ./src/$file ./.temp/$file
@@ -30,7 +30,7 @@ do
       
       clang++ -std=c++11 ./src/$file -o ./out/$file_name -g
 
-      cp ./src/$file ./.temp
+      cp ./src/$file ./.temp/
     fi
   fi
 done
